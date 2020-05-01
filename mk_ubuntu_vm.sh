@@ -1,0 +1,12 @@
+virt-install \
+--name unifi_srv \
+--ram 4096 \
+--disk path=/data-5t-1/vm-images/unifi-srv.img,size=40 \
+--vcpus 2 \
+--virt-type kvm \
+--os-type linux \
+--os-variant ubuntu18.04 \
+--graphics none \
+--console pty,target_type=serial \
+--location 'http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/' \
+--extra-args "console=tty0 console=ttyS0,115200n8"
