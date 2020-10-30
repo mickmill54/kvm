@@ -10,3 +10,5 @@ virt-install \
 --console pty,target_type=serial \
 --location 'http://archive.ubuntu.com/ubuntu/dists/bionic/main/installer-amd64/' \
 --extra-args "console=tty0 console=ttyS0,115200n8"
+--network bridge=virbr0 \
+--extra-args "ip=10.1.1.30::10.1.1.1:255.255.255.0:unifi-srv-01.tmcg.local:eth0=none"
