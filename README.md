@@ -47,7 +47,6 @@ sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients virtinst cpu-che
 ## Step 2: Configure network bridge
 
 The next thing we’re going to do is replace the default bridging. As mentioned above, KVM installs a virtual bridge that all the VMs connect to. It provides its own subnet and DHCP to configure the guest’s network and uses NAT to access the outside world. We’re going to replace that with a public bridge that runs on the host network and uses whatever external DHCP server is on the host network.
-
 <br/>
 
 For performance reasons, it is recommended to disable netfilter on bridges in the host. To do that, create a file called /etc/sysctl.d/bridge.conf and fill it in with this:
@@ -65,7 +64,6 @@ ACTION=="add", SUBSYSTEM=="module", KERNEL=="br_netfilter", RUN+="/sbin/sysctl -
 ```
 
 That should all be on one line. That will set the flags to disable netfilter on bridges at the proper place in system start-up. Reboot to take effect.
-
 <br/>
 
 Next, we need to disable the default networking that KVM installed for itself. You can use ip to see what the default network looks like:
@@ -84,7 +82,6 @@ ip link
 ```
 
 The entries virbr0 and virbr0-nic are what KVM installs by default.
-
 <br/>
 
 Because this host just had KVM installed, I don’t have to worry about existing VMs. If you have existing VMs, you will have to edit them to use the new network setup. It’s possible you can have both public and private VMs, but I’d just as soon have only one type of network per host to avoid confusion. Here’s how to remove the default KVM network:
@@ -194,6 +191,7 @@ ip a
 
 Note that the br0 entry now has the IP address and the enp0s7 entry now has master br0 to show that it belongs to the bridge.
 <br/>
+
 Now we can make KVM aware of this bridge. create a scratch XML file called host-bridge.xml and insert the following:
 
 ```
